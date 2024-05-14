@@ -2,7 +2,7 @@ let isWindowActivated, windowActivatedTime, messagesRemaining, maxMessages, capW
 let localDataSet = false
 
 // set these manually as an ultimate fallback
-const defaultMaxMessages = 50
+const defaultMaxMessages = 10  // Changed X to 10
 const defaultCapWindow = 180
 
 // semi-reliable way of determining if the page has fully loaded yet since window.onload fires too early
@@ -11,7 +11,7 @@ const resourceObserver = new PerformanceObserver((list) => {
 
   for (const entry of entries) {
     // start trying to load data and inject the messages when the API polls for the conversation limit data
-    if (entry.initiatorType === 'fetch' && entry.name === 'https://chat.openai.com/public-api/conversation_limit') {
+    if (entry.initiatorType === 'fetch' && entry.name === 'https://chatgpt.com/public-api/conversation_limit') {  // Changed domain
       fetch(entry.name)
         .then(response => response.json())
         .then(data => {
@@ -22,7 +22,7 @@ const resourceObserver = new PerformanceObserver((list) => {
             if (maxMessages == 50) {
               // looks like the API is currently returning 50 but their UI says 40, so we'll go with 40 for now
               // if the API does update to return some other number than 50 then we'll trust that instead
-              maxMessages = 40;
+              maxMessages = 10;  // Changed X to 10
             }
           }
 
@@ -243,7 +243,7 @@ function onMessageSent() {
 }
 
 function isGpt4() {
-  if (window.location.href === 'https://chat.openai.com/?model=gpt-4') {
+  if (window.location.href === 'https://chatgpt.com/?model=gpt-4') {  // Changed domain
     return true
   }
 
